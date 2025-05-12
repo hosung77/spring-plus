@@ -11,4 +11,5 @@ public interface TodoRepositoryQuery {
 
     Page<TodoResponse> searchByCondition(Pageable pageable, LocalDate start, LocalDate end, String weather);
 
+    TodoResponse searchById(Long todoId);
 }

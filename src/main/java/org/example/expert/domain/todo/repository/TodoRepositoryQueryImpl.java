@@ -64,6 +64,36 @@ public class TodoRepositoryQueryImpl implements TodoRepositoryQuery{
         return new PageImpl<>(content, pageable, total);
     }
 
+    @Override
+    public TodoResponse searchById(Long todoId) {
+
+        QTodo todo = QTodo.todo;
+        QUser user = QUser.user;
+
+        TodoResponse query = jpaQueryFactory
+                .select( Projections.constructor(
+                        TodoResponse.class,
+                        todo.id,
+                        todo.title,
+                        todo.contents,
+                        todo.weather,
+                        Projections.constructor(
+                                UserResponse.class,
+                                user.id,
+                                user.email),
+                        todo.createdAt,
+                        todo.modifiedAt
+                        )
+                )
+                .from(todo)
+                .leftJoin(todo.user, user)
+                .where(todo.id.eq(todoId))
+                .fetchOne();
+
+        return query;
+    }
+
+
     // 날씨 정보가 있으면 제공된 날씨와 일치하는 날씨를 조회 없으면 null 값
     private BooleanExpression weatherEq(String weather) {
         return StringUtils.hasText(weather) ? QTodo.todo.weather.eq(weather) : null;
