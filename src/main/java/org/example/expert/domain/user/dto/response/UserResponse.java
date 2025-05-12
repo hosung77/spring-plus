@@ -1,5 +1,7 @@
 package org.example.expert.domain.user.dto.response;
 
+import com.querydsl.core.types.dsl.NumberPath;
+import com.querydsl.core.types.dsl.StringPath;
 import lombok.Getter;
 
 @Getter
@@ -12,4 +14,5 @@ public class UserResponse {
         this.id = id;
         this.email = email;
     }
+
 }
