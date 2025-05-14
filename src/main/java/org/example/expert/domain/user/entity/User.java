@@ -26,6 +26,7 @@ public class User extends Timestamped {
         this.email = email;
         this.password = password;
         this.userRole = userRole;
+        this.nickName = nickName;
     }
 
     private User(Long id, String email, UserRole userRole) {
