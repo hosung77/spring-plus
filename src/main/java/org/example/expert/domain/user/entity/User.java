@@ -1,11 +1,13 @@
 package org.example.expert.domain.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.entity.Timestamped;
 import org.example.expert.domain.user.enums.UserRole;
+import org.example.expert.domain.user.security.CustomUserPrincipal;
 
 @Getter
 @Entity
@@ -22,20 +24,30 @@ public class User extends Timestamped {
     private UserRole userRole;
     private String nickName;
 
-    public User(String email, String password, UserRole userRole, String nickName) {
-        this.email = email;
-        this.password = password;
-        this.userRole = userRole;
-    }
-
     private User(Long id, String email, UserRole userRole) {
         this.id = id;
         this.email = email;
         this.userRole = userRole;
     }
 
-    public static User fromAuthUser(AuthUser authUser) {
-        return new User(authUser.getId(), authUser.getEmail(), authUser.getUserRole());
+    public User(String email, String password, UserRole userRole, String nickName) {
+        this.email = email;
+        this.password = password;
+        this.userRole = userRole;
+        this.nickName = nickName;
+    }
+
+    @Builder
+    public User(Long id, String email, String password, String nickName, UserRole userRole) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.nickName = nickName;
+        this.userRole = userRole;
+    }
+
+    public static User fromAuthUser(CustomUserPrincipal authUser) {
+        return new User(authUser.getUser().getId(), authUser.getUser().getEmail(), authUser.getUser().getUserRole());
     }
 
     public void changePassword(String password) {
