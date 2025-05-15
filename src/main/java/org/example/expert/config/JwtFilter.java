@@ -1,16 +1,11 @@
 package org.example.expert.config;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.expert.domain.user.enums.UserRole;
 import org.example.expert.domain.user.service.CustomUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,9 +36,6 @@ public class JwtFilter extends OncePerRequestFilter{
 
         if(claims != null){
             String email = claims.getSubject();
-            Long userId = claims.get("userId", Long.class);
-
-            request.setAttribute("userId", userId);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
             UsernamePasswordAuthenticationToken auth =
